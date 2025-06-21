@@ -389,7 +389,7 @@ def calculate_resonant_frequency(resonator_length: float) -> Dict:
 
 @mcp.tool()
 def calculate_coupler_spacing(f0: float, target_qc: float, coupler_width: float, coupler_length: float,
-                            spacing_min: float = 1e-6, spacing_max: float = 100e-6) -> Dict:
+                            spacing_min: float = 1e-6, spacing_max: float = 300e-6) -> Dict:
     """
     Calculates the required coupler spacing for a target coupling quality factor.
 
@@ -642,4 +642,3 @@ if __name__ == "__main__":
     print(f"Effective permittivity εₑff={analytical_approximations.epsilon_eff:.2f}")
     print(f"Feedline impedance Z₀={analytical_approximations.Z0}Ω")
     print(f"Resonator impedance Zᵣₑₛ={analytical_approximations.Z_res}Ω")
-    mcp.run(transport="stdio")
