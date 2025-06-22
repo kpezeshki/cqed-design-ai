@@ -169,7 +169,7 @@ class ResonatorChipDesign:
         # Create smooth transition from wirebond pad to CPW
         wirebond_cpw_trans_xc = pp.transition(wirebond_pad_xc, cpw_xc, width_type='sine')
         wirebond_cpw_trans_path = pp.straight(self.wirebond_pad_taper_length)
-        wirebond_cpw_trans = wirebond_cpw_trans_path.extrude(wirebond_cpw_trans_xc)
+        wirebond_cpw_trans = wirebond_cpw_trans_path.extrude(wirebond_cpw_trans_xc, simplify=0.2)
 
         # Assemble wirebond device
         wirebond << wirebond_pad
@@ -274,12 +274,13 @@ class ResonatorChipDesign:
         # Define meander boundaries
         meander_x_right = coupler_endpoint[0]
         meander_x_left = coupler_endpoint[0] - self.resonator_width
-        meander_y = coupler_endpoint[1]
 
         # Starting point for meander (slightly offset from coupler endpoint)
         meander_start_x = coupler_endpoint[0] + self.cpw_width/2
         meander_start_y = coupler_endpoint[1] - self.cpw_width/2
         meander_points = [(meander_start_x, meander_start_y)]
+
+        meander_y = meander_start_y
 
         # Generate meander points by alternating left and right
         while resonator_length_current + self.resonator_width + self.resonator_meander_space < self.resonator_length:
@@ -313,7 +314,7 @@ class ResonatorChipDesign:
         # Create smooth path with rounded corners
         resonator_path = pp.smooth(meander_points, radius=self.resonator_fillet,
                                  corner_fun=pp.euler)
-        resonator_meander = resonator_path.extrude(cpw_xc)
+        resonator_meander = resonator_path.extrude(cpw_xc, simplify=0.2)
 
         return resonator_meander, remaining_resonator_length
 
@@ -445,7 +446,7 @@ class ResonatorChipDesign:
             print("Exporting GDS files...")
 
             # Export raw chip
-            chip.write_gds(bare_chip_filename)
+            chip.write_gds(bare_chip_filename, precision=1e-6)
 
             # Create full chip with proper boolean operations for fabrication
             manipulate_GDS.slice_and_boolean(
@@ -1690,5 +1691,5 @@ def coupler_save_image_tool(filename="coupler_design.png"):
             "image_size": None
         }
 
-if __name__ == "__main__":
-    mcp.run('stdio')
+#if __name__ == "__main__":
+#    mcp.run('stdio')

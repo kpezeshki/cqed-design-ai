@@ -453,15 +453,7 @@ def _draw_port(ax, port, is_subport, color):
     ax.plot(
         arrow_points[:, 0], arrow_points[:, 1], alpha=0.8, linewidth=2, color=color
     )  # Draw port edge
-    ax.text(
-        text_pos[0],
-        text_pos[1],
-        port.name,
-        horizontalalignment="center",
-        verticalalignment="center",
-        fontsize=14,
-        color=color,
-    )
+
     bbox = [xmin, ymin, xmax, ymax]
     return bbox
 
@@ -478,5 +470,5 @@ def _draw_port_as_point(ax, port, **kwargs):
         x + port.width / 2,
         y + port.width / 2,
     ]
-    ax.text(port.midpoint[0], port.midpoint[1], port.name, fontsize=14)
+
     return bbox
