@@ -1,0 +1,41 @@
+# sonnet_config.yml
+
+# Box dimensions (in microns)
+box_x: 3100
+box_y: 1000
+
+# Sheet inductance (Ohms/sq) and material
+ls: 35
+metal_name: "NbN"
+layer: 0
+data_type: 0
+gds_file_path: "C:/Users/slab/Desktop/Yueheng_Sonnet/sonnet_mcp_test/sonnet_KP.gds"
+sonnet_file_path: "C:/Users/slab/Desktop/Yueheng_Sonnet/sonnet_mcp_test/cpw_mcp_test3.son"
+frequency_sweep_type: "abs"
+start_frequency: 7.05
+stop_frequency: 7.15
+ports:
+  - port_name: "Port1"
+    port_number: 1
+    resistance: 50.0
+    x: 300
+    y: 1000
+  - port_name: "Port2"
+    port_number: 2
+    resistance: 50.0
+    x: 300
+    y: 0
+
+# Optional overrides:
+
+# z_box: 2000
+# xy_margin: 2000
+# air_thickness: 1000
+# si_thickness: 100
+# si_epsilon: 11.7
+# si_loss: 0.0
+# si_conductivity: 0.0
+# tech_x_min: 1
+# tech_x_max: 100
+# tech_y_min: 1
+# tech_y_max: 100
