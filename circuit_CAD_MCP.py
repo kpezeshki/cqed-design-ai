@@ -1226,13 +1226,13 @@ def resonator_get_simulation_info_tool():
 
     try:
         params = {
-            "box_xmin", designer.sonnet_boundary_xmin,
-            "box_xmax", designer.sonnet_boundary_xmax,
-            "box_ymin", designer.sonnet_boundary_ymin,
-            "box_ymax", designer.sonnet_boundary_ymax,
-            "port_1_loc", designer.port_1_location,
-            "port_2_loc", designer.port_2_location,
-            "cell_size", min(designer.cpw_width/3, designer.cpw_gap/3)
+            "box_xmin": designer.sonnet_boundary_xmin,
+            "box_xmax": designer.sonnet_boundary_xmax,
+            "box_ymin": designer.sonnet_boundary_ymin,
+            "box_ymax": designer.sonnet_boundary_ymax,
+            "port_1_loc": designer.port_1_location,
+            "port_2_loc": designer.port_2_location,
+            "cell_size": min(designer.cpw_width/3, designer.cpw_gap/3)
         }
 
     except Exception as e:
@@ -1588,19 +1588,21 @@ def coupler_get_simulation_info_tool():
 
     try:
         params = {
-            "box_xmin", designer.sonnet_boundary_xmin,
-            "box_xmax", designer.sonnet_boundary_xmax,
-            "box_ymin", designer.sonnet_boundary_ymin,
-            "box_ymax", designer.sonnet_boundary_ymax,
-            "port_1_loc", designer.port_1_location,
-            "port_2_loc", designer.port_2_location,
-            "port_3_loc", designer.port_3_location,
-            "cell_size", min(designer.cpw_width/3, designer.cpw_gap/3)
+            "box_xmin": designer.sonnet_boundary_xmin,
+            "box_xmax": designer.sonnet_boundary_xmax,
+            "box_ymin": designer.sonnet_boundary_ymin,
+            "box_ymax": designer.sonnet_boundary_ymax,
+            "port_1_loc": designer.port_1_location,
+            "port_2_loc": designer.port_2_location,
+            "port_3_loc": designer.port_3_location,
+            "cell_size": min(designer.cpw_width/3, designer.cpw_gap/3)
         }
 
     except Exception as e:
         print(f"Error occurred while generating simulation parameters: {e}. Have you run resonator_generate_cad_tool?")
         return None
+
+    return params
 
 @mcp.tool()
 def coupler_get_image_tool():
