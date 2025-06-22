@@ -1,0 +1,544 @@
+hf:
+  atten: -50
+  dir:
+  - - sample1_power_sweep_2
+  - - power_sweep2
+  - - power_sweep5
+  - - power_sweep4
+  - - powersweep3
+  flip: true
+  max_power: -25
+  meas:
+  - '240719'
+  - '240729'
+  - 240729-2
+  - 240729-3
+  - 240729-6
+  meas_type:
+  - vna
+  - vna
+  - vna
+  - vna
+  - soc
+  min_power: -100
+  nfiles:
+  - 1
+  - 2
+  - 3
+  - 3
+  - 3
+  pitch:
+  - 10
+  - 12
+  - 14
+  - 2
+  - 16
+  - 4
+  - 6
+  - 8
+  pth: 
+  - 240729-ResonatorSappHF/
+  - 240729-ResonatorSappHF/
+  - 240729-ResonatorSappHF/
+  - 240729-ResonatorSappHF/
+  - 240729-ResonatorSappHF/
+  target_freq:
+  - 5.9
+  - 6.2
+  - 6.5
+  - 7
+  - 6.7
+  - 7.2
+  - 7.5
+  - 7.9
+hf-soc0:
+  atten: -50
+  dir:
+  - - powersweep0
+  - - powersweep3
+  flip: true
+  max_power: 25
+  meas:
+  - 240729-5
+  - 240729-6
+  meas_type:
+  - soc
+  - soc
+  min_power: -100
+  nfiles:
+  - 3
+  - 3
+  pitch:
+  - 10
+  - 12
+  - 14
+  - 2
+  - 16
+  - 4
+  - 6
+  - 8
+  pth: 240729-ResonatorSappHF/240816-soc/
+  target_freq:
+  - 5.9
+  - 6.2
+  - 6.5
+  - 7
+  - 6.7
+  - 7.2
+  - 7.5
+  - 7.9
+no hf:
+  atten: -40
+  dir:
+  - - power_sweep7
+  flip: false
+  max_power: -15
+  meas:
+  - '240725'
+  meas_type:
+  - vna
+  min_power: -100
+  nfiles:
+  - 2
+  pitch:
+  - 10
+  - 12
+  - 14
+  - 16
+  - 2
+  - 4
+  - 6
+  - 8
+  pth: 240725-ResonatorSappNoHF/
+  target_freq:
+  - 5.9
+  - 6.2
+  - 6.5
+  - 6.7
+  - 7
+  - 7.2
+  - 7.5
+  - 7.9
+scalinq:
+  atten: -65
+  dir:
+  - - powersweep7
+  flip: false
+  max_power: -15
+  meas:
+  - 240814-2
+  meas_type:
+  - vna
+  min_power: -100
+  nfiles:
+  - 3
+  pitch:
+  - 10
+  - 12
+  - 14
+  - 16
+  - 2
+  - 4
+  - 6
+  - 8
+  pth: 240814-ResonatorSappSQ/
+  target_freq:
+  - 5.9
+  - 6.2
+  - 6.5
+  - 6.7
+  - 7
+  - 7.2
+  - 7.5
+  - 7.9
+silicon-scalinq:
+  atten: -65
+  dir:
+  - - powersweep_full
+  - - powersweep8
+  - - powersweep9
+  - - powersweep10
+  flip: true
+  max_power: 5
+  meas:
+  - silicon-scalinq-0
+  - silicon-scalinq-1
+  - silicon-scalinq-2
+  - silicon-scalinq-3
+  slope: 
+  - -0.0000003
+  - -0.0000005
+  - -0.0000005
+  - -0.0000005
+  meas_type:
+  - vna
+  - vna
+  - vna
+  - vna
+  min_power: -100
+  nfiles:
+  - 3
+  - 3
+  - 1
+  - 3
+  pitch:
+  - 10
+  - 12
+  - 14
+  - 2
+  - 16
+  - 4
+  - 6
+  - 8
+  pth: 
+  - 240908-ResonatorSilSQ/
+  - 240908-ResonatorSilSQ/
+  - 240908-ResonatorSilSQ/
+  - 240908-ResonatorSilSQ/
+  target_freq:
+  - 5.9
+  - 6.2
+  - 6.5
+  - 7
+  - 6.7
+  - 7.2
+  - 7.5
+  - 7.9
+silicon-scalinq_temp:
+  atten: -65
+  dir:
+  -
+    - temp_61mK
+    - temp_101mK
+    - temp_139mK
+    - temp_189mK
+    - temp_229mK
+    - temp_274mK
+    - temp_332mK
+    - temp_568mK
+  flip: true
+  max_power: 20
+  meas:
+  - silicon-scalinq-temp
+  meas_type:
+  - vna
+  min_power: -100
+  nfiles:
+  - 3
+  pitch:
+  - 10
+  - 12
+  - 14
+  - 2
+  - 16
+  - 4
+  - 6
+  - 8
+  pth: 240925-ResTempSweep/
+  target_freq:
+  - 5.9
+  - 6.2
+  - 6.5
+  - 7
+  - 6.7
+  - 7.2
+  - 7.5
+  - 7.9
+soc_silicon:
+  atten: -50
+  dir:
+  - - powersweep3
+  - - powersweep5
+  - - powersweep6
+  - - powersweep1
+  flip: true
+  max_power: 25
+  meas:
+  - silicon-no-waffle
+  - silicon-no-waffle_lopower
+  - silicon-no-waffle2
+  - silicon-waffle
+  meas_type:
+  - soc
+  - soc
+  - soc
+  - soc
+  min_power: -150
+  nfiles:
+  - 3
+  - 3
+  - 3
+  - 3
+  pitch:
+  - 10
+  - 12
+  - 16
+  - 2
+  - 14
+  - 4
+  - 6
+  - 8
+  pth: 241104-Resonator/
+  target_freq:
+  - 5.9
+  - 6.2
+  - 6.5
+  - 7
+  - 6.7
+  - 7.2
+  - 7.5
+  - 7.9
+soc_silicon_waff_1108:
+  atten: -50
+  dir:
+  - - powersweep1
+  - - powersweep4
+  - - powersweep2
+  - - powersweep22
+  - - powersweep24
+  - - powersweep28
+  flip: true
+  max_power: 25
+  meas:
+  - silicon-waffle-1108
+  - silicon-waffle-pt2
+  - silicon-waffle-sing
+  - silicon-waffle-phase
+  - silicon-waffle-fixkink
+  - silicon-waffle-kink3
+  meas_type:
+  - soc
+  - soc
+  - soc
+  - soc
+  - soc
+  - soc
+  min_power: -150
+  nfiles:
+  - 3
+  - 3
+  - 3
+  - 3
+  - 1
+  - 3
+  slope:
+  - 29.43
+  - 1129.46
+  - 1129.46
+  - 1130.85
+  - 1130.85
+  - 1130.96
+  pitch:
+  - 10
+  - 12
+  - 14
+  - 2
+  - 16
+  - 4
+  - 6
+  - 8
+  pth: 
+  - 241108-Resonator/
+  - 241108-Resonator/
+  - 241118-Resonator/
+  - 241118-Resonator/
+  - 241108-Resonator/
+  - 241108-Resonator/
+  target_freq:
+  - 5.9
+  - 6.2
+  - 6.5
+  - 7
+  - 6.7
+  - 7.2
+  - 7.5
+  - 7.9
+silicon3:
+  atten: -50
+  dir:
+  - - powersweep17
+  - - powersweep2
+  - - powersweep3
+  flip: true
+  max_power: 25
+  meas:
+  - full_qubitB
+  - sil3_test_sweep
+  - sil3_vna
+  meas_type:
+  - soc
+  - soc
+  - vna
+  min_power: -150
+  nfiles:
+  - 3
+  - 1
+  - 3
+  slope:
+  #- 1135.027
+  #- 1129.5914
+  - 1129.8
+  - 1129.6
+  - 0
+  pitch:
+  - 10
+  - 12
+  - 2
+  - 14
+  - 4
+  - 16
+  - 6
+  - 8
+  pth: 
+  - 241125-ResonatorSil3/
+  - 241125-ResonatorSil3/atten/
+  - 241213-Resonator/
+  target_freq:
+  - 5.9
+  - 6.2
+  - 6.5
+  - 7
+  - 6.7
+  - 7.2
+  - 7.5
+  - 7.9
+silicon3b:
+  atten: -50
+  dir:
+  - - powersweep5
+  - - powersweep1
+  flip: true
+  max_power: 5
+  meas:
+  - sil3b_vna
+  - sil3b_vna2
+  meas_type:
+  - vna
+  - vna
+  min_power: -80
+  nfiles:
+  - 3
+  - 3
+  slope:
+  - 0
+  - 0
+  pitch:
+  - 10
+  - 12
+  - 2
+  - 14
+  - 4
+  - 16
+  - 6
+  - 8
+  pth: 
+  - 241217-ResonatorB/
+  - 241217-ResonatorB/
+  target_freq:
+  - 5.9
+  - 6.2
+  - 6.5
+  - 7
+  - 6.7
+  - 7.2
+  - 7.5
+  - 7.9
+silicon4b:
+  atten: -50
+  dir:
+  - - power_sweep_20250302_1936056/
+  - - power_sweep_20250306_091739/
+  flip: true
+  max_power: 5
+  meas:
+  - sil4b1
+  - sil4b2
+  meas_type:
+  - vna_old
+  - vna_old
+  min_power: -150
+  nfiles:
+  - 1
+  - 1
+  slope:
+  - 0
+  - 0
+  pitch:
+  - 10
+  - 12
+  - 14
+  - 16
+  - 4
+  - 6
+  - 8
+  pth: 
+  - 250227-ResSil4B/
+  - 250227-ResSil4B/
+  target_freq:
+  - 6.08
+  - 6.4
+  - 6.76
+  - 7.09
+  - 7.28
+  - 7.64
+  - 8.13 
+silicon4a2:
+  atten: -50
+  dir:
+  - - power_sweep_20250308_202738/old
+  flip: true
+  max_power: 5
+  meas:
+  - sil4a3
+  meas_type:
+  - vna_old
+  min_power: -150
+  nfiles:
+  - 1
+  slope:
+  - 0
+  pitch:
+  - 12 
+  - 14
+  - 2
+  - 16
+  pth: 
+  - 250227-ResSil4A/
+  target_freq:
+  - 6.4
+  - 6.76
+  - 7.06
+  - 7.09 
+silicon4a:
+  atten: -50
+  dir:
+  - - power_sweep_20250307_174853/
+  - - power_sweep_20250308_202738/
+  flip: true
+  max_power: 5
+  meas:
+  - sil4a1
+  - sil4a2
+  meas_type:
+  - vna
+  - vna
+  min_power: -150
+  nfiles:
+  - 1
+  - 1
+  slope:
+  - 0
+  - 0
+  pitch:
+  - 10
+  - 4
+  - 6
+  - 8
+  pth: 
+  - 250227-ResSil4Y/
+  - 250227-ResSil4A/
+  target_freq:
+  - 6.08
+  - 7.28
+  - 7.64
+  - 8.13 
