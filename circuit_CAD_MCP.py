@@ -405,10 +405,13 @@ class ResonatorChipDesign:
             chip_boundary_ymax = resonator_bbox[1][1] + 500
 
             # Calculate Sonnet simulation boundaries (smaller for efficiency)
-            sonnet_boundary_xmin = feedline_xmin + 250
-            sonnet_boundary_xmax = feedline_xmax - 250
-            sonnet_boundary_ymin = -250
-            sonnet_boundary_ymax = resonator_bbox[1][1] + 250
+            self.sonnet_boundary_xmin = feedline_xmin + 250
+            self.sonnet_boundary_xmax = feedline_xmax - 250
+            self.sonnet_boundary_ymin = -250
+            self.sonnet_boundary_ymax = resonator_bbox[1][1] + 250
+
+            self.port_1_location = (self.sonnet_boundary_xmin, 0)
+            self.port_2_location = (self.sonnet_boundary_xmax, 0)
 
             # Create CPW cross-section for feedline
             cpw_xc = CrossSection()
@@ -461,8 +464,8 @@ class ResonatorChipDesign:
             # Create Sonnet simulation version
             manipulate_GDS.slice_and_boolean(
                 bare_chip_filename, sonnet_chip_filename,
-                np.array([[sonnet_boundary_xmin, sonnet_boundary_ymin],
-                         [sonnet_boundary_xmax, sonnet_boundary_ymax]]),
+                np.array([[self.sonnet_boundary_xmin, self.sonnet_boundary_ymin],
+                         [self.sonnet_boundary_xmax, self.sonnet_boundary_ymax]]),
                 {"layer 1": [10, 1], "layer 2": [self.cutout_layer, self.cad_layer],
                  "layer out": [1, 1], "operation": ["not", "or"]},
                 [1]
@@ -848,7 +851,6 @@ class CouplerChipDesign:
 
             coupler_chip.move((-self.coupler_length, 0)) # to center the coupler at x=0
 
-
             # Store the generated devices in class attributes
             self.device = coupler_chip
             self.coupler_sonnet_sim = coupler_sonnet_sim
@@ -858,6 +860,15 @@ class CouplerChipDesign:
 
             # Export raw coupler chip
             coupler_chip.write_gds(coupler_chip_filename)
+
+            self.sonnet_boundary_xmin = coupler_chip.bbox[0][0]
+            self.sonnet_boundary_xmax = coupler_chip.bbox[1][0]
+            self.sonnet_boundary_ymin = coupler_chip.bbox[0][1]
+            self.sonnet_boundary_ymax = coupler_chip.bbox[1][1]
+
+            self.port_1_location = (self.sonnet_boundary_xmin, 0)
+            self.port_2_location = (self.sonnet_boundary_xmax, 0)
+            self.port_3_location = (0, self.sonnet_boundary_ymax)
 
             # Create Sonnet simulation version with proper boolean operations
             manipulate_GDS.slice_and_boolean(
@@ -1187,6 +1198,49 @@ def resonator_get_params_tool():
             "parameters": {}
         }
 
+@mcp.tool()
+def resonator_get_simulation_info_tool():
+    """
+    MCP Tool:
+
+    Retrieves design information necessary for simulation.
+    THIS MUST BE RUN AFTER RESONATOR_GENERATE_CAD_TOOL
+
+    For Sonnet simulation, this includes:
+    - dimensions of the Sonnet chip (the 'box')
+    - locations of ports 1 and 2 (the edges of the feedline)
+    - min(cpw_width/3, cpw_gap/3) the suggested sonnet cell size
+
+    Returns:
+        dict: simulation parameters including:
+            - box_xmin
+            - box_ymin
+            - box_xmax
+            - box_ymax
+            - (port_1_x, port_1_y)
+            - (port_2_x, port_2_y)
+            - cell size
+    """
+
+    designer = initialize_resonator_designer()
+
+    try:
+        params = {
+            "box_xmin", designer.sonnet_boundary_xmin,
+            "box_xmax", designer.sonnet_boundary_xmax,
+            "box_ymin", designer.sonnet_boundary_ymin,
+            "box_ymax", designer.sonnet_boundary_ymax,
+            "port_1_loc", designer.port_1_location,
+            "port_2_loc", designer.port_2_location,
+            "cell_size", min(designer.cpw_width/3, designer.cpw_gap/3)
+        }
+
+    except Exception as e:
+        print(f"Error occurred while generating simulation parameters: {e}. Have you run resonator_generate_cad_tool?")
+        return None
+
+    return params
+
 
 @mcp.tool()
 def resonator_get_image_tool():
@@ -1505,6 +1559,48 @@ def coupler_get_params_tool():
             "parameters": {}
         }
 
+@mcp.tool()
+def coupler_get_simulation_info_tool():
+    """
+    MCP Tool:
+
+    Retrieves design information necessary for simulation.
+    THIS MUST BE RUN AFTER COUPLER_GENERATE_CAD_TOOL
+
+    For Sonnet simulation, thisincludes:
+    - dimensions of the Sonnet chip (the 'box')
+    - locations of ports 1 and 2 (the edges of the feedline)
+    - min(cpw_width/3, cpw_gap/3) the suggested sonnet cell size
+
+    Returns:
+        dict: simulation parameters including:
+            - box_xmin
+            - box_ymin
+            - box_xmax
+            - box_ymax
+            - (port_1_x, port_1_y)
+            - (port_2_x, port_2_y)
+            - (port_3_x, port_3_y)
+            - cell size
+    """
+
+    designer = initialize_coupler_designer()
+
+    try:
+        params = {
+            "box_xmin", designer.sonnet_boundary_xmin,
+            "box_xmax", designer.sonnet_boundary_xmax,
+            "box_ymin", designer.sonnet_boundary_ymin,
+            "box_ymax", designer.sonnet_boundary_ymax,
+            "port_1_loc", designer.port_1_location,
+            "port_2_loc", designer.port_2_location,
+            "port_3_loc", designer.port_3_location,
+            "cell_size", min(designer.cpw_width/3, designer.cpw_gap/3)
+        }
+
+    except Exception as e:
+        print(f"Error occurred while generating simulation parameters: {e}. Have you run resonator_generate_cad_tool?")
+        return None
 
 @mcp.tool()
 def coupler_get_image_tool():
