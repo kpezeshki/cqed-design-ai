@@ -896,11 +896,11 @@ class CouplerChipDesign:
             self.sonnet_boundary_xmin = coupler_chip.bbox[0][0]
             self.sonnet_boundary_xmax = coupler_chip.bbox[1][0]
             self.sonnet_boundary_ymin = coupler_chip.bbox[0][1]
-            self.sonnet_boundary_ymax = coupler_chip.bbox[1][1]
+            self.sonnet_boundary_ymax = coupler_chip.bbox[1][1] - self.cpw_gap
 
             self.port_1_location = (self.sonnet_boundary_xmin, -1*coupler_chip_bottom_left_y)
             self.port_2_location = (self.sonnet_boundary_xmax, -1*coupler_chip_bottom_left_y)
-            self.port_3_location = (self.coupler_length - coupler_chip_bottom_left_x, self.sonnet_boundary_ymax - self.cpw_gap)
+            self.port_3_location = (self.coupler_length - coupler_chip_bottom_left_x, self.sonnet_boundary_ymax)
 
             # Create Sonnet simulation version with proper boolean operations
             manipulate_GDS.slice_and_boolean(
