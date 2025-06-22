@@ -392,7 +392,6 @@ class ResonatorChipDesign:
 
             # Calculate chip layout dimensions based on resonator bounding box
             resonator_bbox = resonator_meander.bbox
-            print(f"Resonator bounding box: {resonator_bbox}")
 
             # Calculate feedline dimensions (500 um gap on either side of resonator)
             feedline_xmin = resonator_bbox[0][0] - 500
@@ -431,6 +430,35 @@ class ResonatorChipDesign:
             drawn_cad << coupler
             drawn_cad << deepcopy(wirebond).move((feedline_xmin, 0))
             drawn_cad << deepcopy(wirebond).rotate(180).move((feedline_xmax, 0))
+
+            drawn_cad_bottom_left_x = self.sonnet_boundary_xmin
+            drawn_cad_bottom_left_y = self.sonnet_boundary_ymin
+
+            print("current position:", drawn_cad_bottom_left_x, drawn_cad_bottom_left_y)
+            print("current bbox:", drawn_cad.bbox)
+            print("moving by ", -drawn_cad_bottom_left_x, -drawn_cad_bottom_left_y)
+
+            drawn_cad.move((-drawn_cad_bottom_left_x, -drawn_cad_bottom_left_y))
+
+            print("new bbox:", drawn_cad.bbox)
+
+            chip_boundary_xmin -= drawn_cad_bottom_left_x
+            chip_boundary_xmax -= drawn_cad_bottom_left_x
+            chip_boundary_ymin -= drawn_cad_bottom_left_y
+            chip_boundary_ymax -= drawn_cad_bottom_left_y
+
+            self.sonnet_boundary_xmin -= drawn_cad_bottom_left_x
+            self.sonnet_boundary_xmax -= drawn_cad_bottom_left_x
+            self.sonnet_boundary_ymin -= drawn_cad_bottom_left_y
+            self.sonnet_boundary_ymax -= drawn_cad_bottom_left_y
+
+            port_1_location_x = self.port_1_location[0] - drawn_cad_bottom_left_x
+            port_1_location_y = self.port_1_location[1] - drawn_cad_bottom_left_y
+            port_2_location_x = self.port_2_location[0] - drawn_cad_bottom_left_x
+            port_2_location_y = self.port_2_location[1] - drawn_cad_bottom_left_y
+
+            self.port_1_location = (port_1_location_x, port_1_location_y)
+            self.port_2_location = (port_2_location_x, port_2_location_y)
 
             # Create complete chip with ground plane
             chip = Device("chip")
@@ -849,7 +877,11 @@ class CouplerChipDesign:
             coupler_chip << coupler_sonnet_sim
             coupler_chip << coupler_chip_groundplane
 
-            coupler_chip.move((-self.coupler_length, 0)) # to center the coupler at x=0
+            # move the coupler so that the bottom-left corner is at (0, 0)
+            coupler_chip_bottom_left_x = coupler_chip.bbox[0][0]
+            coupler_chip_bottom_left_y = coupler_chip.bbox[0][1]
+
+            coupler_chip.move((-coupler_chip_bottom_left_x, -coupler_chip_bottom_left_y))
 
             # Store the generated devices in class attributes
             self.device = coupler_chip
@@ -866,9 +898,9 @@ class CouplerChipDesign:
             self.sonnet_boundary_ymin = coupler_chip.bbox[0][1]
             self.sonnet_boundary_ymax = coupler_chip.bbox[1][1]
 
-            self.port_1_location = (self.sonnet_boundary_xmin, 0)
-            self.port_2_location = (self.sonnet_boundary_xmax, 0)
-            self.port_3_location = (0, self.sonnet_boundary_ymax)
+            self.port_1_location = (self.sonnet_boundary_xmin, -1*coupler_chip_bottom_left_y)
+            self.port_2_location = (self.sonnet_boundary_xmax, -1*coupler_chip_bottom_left_y)
+            self.port_3_location = (self.coupler_length - coupler_chip_bottom_left_x, self.sonnet_boundary_ymax - self.cpw_gap)
 
             # Create Sonnet simulation version with proper boolean operations
             manipulate_GDS.slice_and_boolean(
@@ -1789,5 +1821,5 @@ def coupler_save_image_tool(filename="coupler_design.png"):
             "image_size": None
         }
 
-if __name__ == "__main__":
-    mcp.run('stdio')
+#if __name__ == "__main__":
+#    mcp.run('stdio')
