@@ -157,7 +157,74 @@ def extract_total_quality_factor(file_path, plot_folder_path=None):
     image_path = save_plot_and_show(fig, plot_folder_path, title="S21 Plot_with_fit")
     base64_img = image_to_base64(image_path) if image_path else None
     return ImageContent( type='image',data=base64_img, mimeType='image/png'), Q
-   
+
+from circle_fitting_code import *
+@mcp.tool()
+def perform_circle_fit(file_path, plot_folder_path=None):
+    """
+    Perform a circle fit on S-parameter data to extract resonator parameters.
+    This function reads S-parameter data from a file, extracts the S21 parameter,
+    separates its real and imaginary parts, and performs a circle fit to determine
+    key resonator parameters such as resonance frequency, quality factors, and more.
+    Optionally, it can generate and save a plot of the fit.
+    Args:
+        file_path (str): Path to the file containing S-parameter data.
+        plot_folder_path (str, optional): Path to the folder where the plot should be saved.
+            If None, the plot will not be saved.
+    Returns:
+        tuple: A tuple containing:
+            - ImageContent: An object containing the base64-encoded image of the circle fit plot.
+            - dict: A dictionary containing the fit results with follwing keys: 
+                ['xc', 'xc_stderr', 'yc', 'yc_stderr', 'rc', 'rc_stderr', 'theta0', 'theta0_stderr',
+                'Qtot', 'Qtot_stderr', 'fr', 'fr_stderr', 'alpha', 'alpha_stderr', 'a', 'a_stderr',
+                  'phi', 'phi_stderr', 'Qc', 'Qc_stderr', 'Qi', 'Qi_stderr']
+
+    Notes:
+        - The fit type is set to 'hanger' by default. Adjust the `fittype` parameter
+          in the `circlefit` function call if needed.
+        - The function assumes the input file contains S-parameter data in a format
+          compatible with the `get_s_params` function.
+        - The plot is saved using the `save_plot_and_show` function, and its path is
+          converted to a base64-encoded image if applicable.
+    """
+
+    
+    S, freqs = get_s_params(file_path)
+    s21 = S[:, 0, 1]  # Pick out S12 = measurement at port 1 due to excitation at port 2
+
+    # Separate real and imaginary parts
+    real_data = s21.real
+    imag_data = s21.imag
+
+    # Run the circle fit
+    fitresults = circlefit(
+        freqs=freqs,
+        Xn=real_data, 
+        Yn=imag_data,
+        fittype='hanger',  # Change to 'hanger' or 'reflection' if needed based on your CPW design
+        plotlabel='CPW Resonator',
+        show_plots=True,
+        print_results=True
+    )
+
+    # fit results format (['xc', 'xc_stderr', 'yc', 'yc_stderr', 'rc', 'rc_stderr', 'theta0', 'theta0_stderr', 'Qtot', 'Qtot_stderr', 'fr', 'fr_stderr', 'alpha', 'alpha_stderr', 'a', 'a_stderr', 'phi', 'phi_stderr', 'Qc', 'Qc_stderr', 'Qi', 'Qi_stderr'])
+
+    # # Print out key resonator parameters
+    # print("\nSummary of Key Parameters:")
+    # print(f"Resonance Frequency: {fitresults['fr']/1e9:.6f} GHz")
+    # print(f"Loaded Quality Factor (Q_L): {fitresults['Qtot']:.0f}")
+    # print(f"Coupling Quality Factor (Q_c): {fitresults['Qc']:.0f}")
+    # print(f"Internal Quality Factor (Q_i): {fitresults['Qi']:.0f}")
+
+    # # You can also save the fit results to a file
+    # np.save('cpw_fitresults.npy', fitresults)
+
+    fig = fitresults['fig']
+    image_path = save_plot_and_show(fig, plot_folder_path, title="Circle fit ")
+    base64_img = image_to_base64(image_path) if image_path else None
+    return ImageContent( type='image',data=base64_img, mimeType='image/png'), fitresults
+
+    return fitresults
 
 # ----------------------------Static-----------------------------------------
 def image_to_base64(image_path):
