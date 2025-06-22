@@ -1691,5 +1691,5 @@ def coupler_save_image_tool(filename="coupler_design.png"):
             "image_size": None
         }
 
-#if __name__ == "__main__":
-#    mcp.run('stdio')
+if __name__ == "__main__":
+    mcp.run('stdio')
