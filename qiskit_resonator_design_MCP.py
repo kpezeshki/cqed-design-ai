@@ -12,10 +12,13 @@ The class handles the complete workflow from design to export, including:
 - Designing couplers with programmable dimensions
 - Creating meandered resonators with customizable geometry
 - Exporting designs to GDS format for fabrication
-- Generating visual screenshots of the design
+- Generating visual screenshots of the design (when GUI is enabled)
 
 All input parameters use micrometers (um) as units, which are automatically
 converted to Qiskit Metal's native millimeter units internally.
+
+The GUI can be disabled by setting show_gui=False to run in headless mode,
+which is useful for batch processing or environments without display support.
 """
 
 import qiskit_metal as metal
@@ -37,11 +40,11 @@ mcp = FastMCP("resonator_design")
 # Global designer instance
 designer_instance = None
 
-def initialize_designer():
+def initialize_designer(show_gui=False):
     """Initialize the global designer instance if not already created."""
     global designer_instance
     if designer_instance is None:
-        designer_instance = SuperconductingResonatorDesigner()
+        designer_instance = SuperconductingResonatorDesigner(show_gui=show_gui)
     return designer_instance
 
 
@@ -58,7 +61,8 @@ class SuperconductingResonatorDesigner:
 
     Attributes:
         design (DesignPlanar): The main Qiskit Metal design object
-        gui (MetalGUI): The graphical user interface for visualization
+        gui (MetalGUI): The graphical user interface for visualization (if enabled)
+        show_gui (bool): Flag to control GUI initialization and operations
         cpw_width (float): Width of the coplanar waveguide center conductor (um)
         cpw_gap (float): Gap between center conductor and ground plane (um)
         resonator_length (float): Total electrical length of the resonator (um)
@@ -67,18 +71,27 @@ class SuperconductingResonatorDesigner:
         coupler_length (float): Length of the coupling region (um)
     """
 
-    def __init__(self, cpw_width_um=10, cpw_gap_um=10):
+    def __init__(self, cpw_width_um=10, cpw_gap_um=10, show_gui=True):
         """
         Initialize the resonator designer with default CPW parameters.
 
         Args:
             cpw_width_um (float): Width of CPW center conductor in micrometers
             cpw_gap_um (float): Gap between conductor and ground in micrometers
+            show_gui (bool): Whether to initialize and enable GUI operations
         """
-        # Initialize Qiskit Metal design and GUI
+        # Store GUI flag
+        self.show_gui = show_gui
+
+        # Initialize Qiskit Metal design
         self.design = designs.DesignPlanar()
         self.design.overwrite_enabled = True
-        self.gui = MetalGUI(self.design)
+
+        # Initialize GUI only if requested
+        if self.show_gui:
+            self.gui = MetalGUI(self.design)
+        else:
+            self.gui = None
 
         # Store parameters in micrometers for user interface
         self.cpw_width_um = cpw_width_um
@@ -119,6 +132,41 @@ class SuperconductingResonatorDesigner:
             float: Value in millimeters
         """
         return value_um * 1e-3
+
+    def is_gui_enabled(self):
+        """
+        Check if GUI is enabled and available.
+
+        Returns:
+            bool: True if GUI is enabled and available, False otherwise
+        """
+        return self.show_gui and self.gui is not None
+
+    def enable_gui(self):
+        """
+        Enable GUI if it was previously disabled.
+
+        Returns:
+            bool: True if GUI was successfully enabled, False if already enabled
+        """
+        if not self.show_gui:
+            self.show_gui = True
+            if self.gui is None:
+                self.gui = MetalGUI(self.design)
+            return True
+        return False
+
+    def disable_gui(self):
+        """
+        Disable GUI operations.
+
+        Returns:
+            bool: True if GUI was successfully disabled, False if already disabled
+        """
+        if self.show_gui:
+            self.show_gui = False
+            return True
+        return False
 
     def design_coupler(self, coupler_gap_um, coupler_length_um):
         """
@@ -356,13 +404,22 @@ class SuperconductingResonatorDesigner:
         Returns:
             str: Path to the saved image file
         """
-        # Rebuild and autoscale the GUI to ensure current design is displayed
-        self.gui.rebuild()
-        self.gui.autoscale()
+        # Check if GUI is enabled
+        if not self.show_gui or self.gui is None:
+            print("GUI is disabled - cannot generate screenshot")
+            return None
 
-        # Take screenshot and save to file
-        self.gui.screenshot()
-        self.gui.figure.savefig(filename)
+        # Rebuild and autoscale the GUI to ensure current design is displayed
+        if self.gui is not None:
+            self.gui.rebuild()
+            self.gui.autoscale()
+
+            # Take screenshot and save to file
+            self.gui.screenshot()
+            self.gui.figure.savefig(filename)
+        else:
+            print("GUI is not initialized - cannot generate screenshot")
+            return None
 
         # Display the image inline (works in Jupyter notebooks)
         try:
@@ -400,7 +457,8 @@ class SuperconductingResonatorDesigner:
         print(f"Exporting resonator design to GDS format...")
 
         # Ensure design is up to date
-        self.gui.rebuild()
+        if self.show_gui and self.gui is not None:
+            self.gui.rebuild()
 
         # Export to GDS format
         self.design.renderers.gds.options['gds_unit'] = 0.001
@@ -444,7 +502,7 @@ class SuperconductingResonatorDesigner:
 # These functions provide the Model Context Protocol interface for LLM interaction
 
 @mcp.tool()
-def design_resonator_tool(resonator_length_um, resonator_height_um):
+def design_resonator_tool(resonator_length_um, resonator_height_um, show_gui=True):
     """
     MCP Tool: Design or modify the resonator dimensions.
 
@@ -455,26 +513,28 @@ def design_resonator_tool(resonator_length_um, resonator_height_um):
     Args:
         resonator_length_um (float): Total electrical length in micrometers
         resonator_height_um (float): Physical height of layout in micrometers
+        show_gui (bool): Whether to enable GUI operations (default: True)
 
     Returns:
         dict: Status and updated parameters
     """
     global designer_instance
-    designer = initialize_designer()
+    designer = initialize_designer(show_gui=show_gui)
 
     try:
         designer.design_resonator(resonator_length_um, resonator_height_um)
         return {
             "status": "success",
             "message": f"Resonator designed with length {resonator_length_um} um and height {resonator_height_um} um",
-            "parameters": designer.get_parameters()
+            "parameters": designer.get_parameters(),
+            "gui_enabled": designer.is_gui_enabled()
         }
     except Exception as e:
         return {"error": f"Failed to design resonator: {str(e)}"}
 
 
 @mcp.tool()
-def design_coupler_tool(coupler_gap_um, coupler_length_um):
+def design_coupler_tool(coupler_gap_um, coupler_length_um, show_gui=True):
     """
     MCP Tool: Design or modify the coupler dimensions.
 
@@ -484,50 +544,56 @@ def design_coupler_tool(coupler_gap_um, coupler_length_um):
     Args:
         coupler_gap_um (float): Coupling gap in micrometers
         coupler_length_um (float): Coupling length in micrometers
+        show_gui (bool): Whether to enable GUI operations (default: True)
 
     Returns:
         dict: Status and updated parameters
     """
     global designer_instance
-    designer = initialize_designer()
+    designer = initialize_designer(show_gui=show_gui)
 
     try:
         designer.design_coupler(coupler_gap_um, coupler_length_um)
         return {
             "status": "success",
             "message": f"Coupler designed with gap {coupler_gap_um} um and length {coupler_length_um} um",
-            "parameters": designer.get_parameters()
+            "parameters": designer.get_parameters(),
+            "gui_enabled": designer.is_gui_enabled()
         }
     except Exception as e:
         return {"error": f"Failed to design coupler: {str(e)}"}
 
 
 @mcp.tool()
-def get_parameters_tool():
+def get_parameters_tool(show_gui=True):
     """
     MCP Tool: Get all current design parameters.
 
     This tool allows an LLM to retrieve all the current dimensional parameters
     of the resonator design for inspection or further modification.
 
+    Args:
+        show_gui (bool): Whether to enable GUI operations (default: True)
+
     Returns:
         dict: All current design parameters in micrometers
     """
     global designer_instance
-    designer = initialize_designer()
+    designer = initialize_designer(show_gui=show_gui)
 
     try:
         parameters = designer.get_parameters()
         return {
             "status": "success",
-            "parameters": parameters
+            "parameters": parameters,
+            "gui_enabled": designer.is_gui_enabled()
         }
     except Exception as e:
         return {"error": f"Failed to get parameters: {str(e)}"}
 
 
 @mcp.tool()
-def export_resonator_tool(gds_filename='resonator.gds', sonnet_filename='sonnet.gds'):
+def export_resonator_tool(gds_filename='resonator.gds', sonnet_filename='sonnet.gds', show_gui=True):
     """
     MCP Tool: Export the resonator design to GDS format.
 
@@ -537,12 +603,13 @@ def export_resonator_tool(gds_filename='resonator.gds', sonnet_filename='sonnet.
     Args:
         gds_filename (str): Name for the raw GDS export file
         sonnet_filename (str): Name for the simulation-ready GDS file
+        show_gui (bool): Whether to enable GUI operations (default: True)
 
     Returns:
         dict: Status and file paths
     """
     global designer_instance
-    designer = initialize_designer()
+    designer = initialize_designer(show_gui=show_gui)
 
     try:
         gds_path, sonnet_path = designer.export_resonator(gds_filename, sonnet_filename)
@@ -552,45 +619,128 @@ def export_resonator_tool(gds_filename='resonator.gds', sonnet_filename='sonnet.
             "files": {
                 "gds_file": gds_path,
                 "sonnet_file": sonnet_path
-            }
+            },
+            "gui_enabled": designer.is_gui_enabled()
         }
     except Exception as e:
         return {"error": f"Failed to export resonator: {str(e)}"}
 
 
 @mcp.tool()
-def get_picture_tool():
+def get_picture_tool(show_gui=True):
     """
     MCP Tool: Generate and save a screenshot of the current design.
 
     This tool allows an LLM to generate visual feedback of the current resonator
-    design by creating a screenshot image.
+    design by creating a screenshot image. Requires GUI to be enabled.
+
+    Args:
+        show_gui (bool): Whether to enable GUI operations (default: True)
 
     Returns:
         Image object containing the a render of the resonator design
     """
     global designer_instance
-    designer = initialize_designer()
+    designer = initialize_designer(show_gui=show_gui)
 
     try:
+        # Check if GUI is enabled
+        if not designer.is_gui_enabled():
+            raise ValueError("GUI is disabled - cannot generate screenshot. Set show_gui=True to enable GUI operations.")
+
         # Rebuild and autoscale the GUI to ensure current design is displayed
-        designer.gui.rebuild()
-        designer.gui.autoscale()
+        if designer.gui is not None:
+            designer.gui.rebuild()
+            designer.gui.autoscale()
 
-        # Take screenshot and save to memory buffer instead of file
-        designer.gui.screenshot()
+            # Take screenshot and save to memory buffer instead of file
+            designer.gui.screenshot()
 
-        # Create a BytesIO buffer to capture the image data
-        buf = io.BytesIO()
-        designer.gui.figure.savefig(buf, format='png', dpi=150, bbox_inches='tight')
-        buf.seek(0)
-        img_data = buf.read()
+            # Create a BytesIO buffer to capture the image data
+            buf = io.BytesIO()
+            designer.gui.figure.savefig(buf, format='png', dpi=150, bbox_inches='tight')
+            buf.seek(0)
+            img_data = buf.read()
+        else:
+            raise ValueError("GUI is not initialized - cannot generate screenshot.")
 
         # Return Image object for MCP
         return Image(data=img_data, format="png")
 
     except Exception as e:
         raise ValueError(f"Failed to generate screenshot: {str(e)}")
+
+
+#@mcp.tool()
+#def gui_status_tool():
+#    """
+#    MCP Tool: Check the current GUI status.
+#
+#    Returns:
+#        dict: GUI status information
+#    """
+#    global designer_instance
+#    if designer_instance is None:
+#        return {
+#            "status": "success",
+#            "gui_enabled": False,
+#            "message": "Designer not initialized"
+#        }
+#
+#    return {
+#        "status": "success",
+#        "gui_enabled": designer_instance.is_gui_enabled(),
+#        "message": f"GUI is {'enabled' if designer_instance.is_gui_enabled() else 'disabled'}"
+#    }
+#
+#
+#@mcp.tool()
+#def enable_gui_tool():
+#    """
+#    MCP Tool: Enable GUI operations.
+#
+#    Returns:
+#        dict: Status of GUI enable operation
+#    """
+#    global designer_instance
+#    designer = initialize_designer(show_gui=True)
+#
+#    try:
+#        was_enabled = designer.enable_gui()
+#        return {
+#            "status": "success",
+#            "gui_enabled": designer.is_gui_enabled(),
+#            "message": "GUI enabled successfully" if was_enabled else "GUI was already enabled"
+#        }
+#    except Exception as e:
+#        return {"error": f"Failed to enable GUI: {str(e)}"}
+#
+#
+#@mcp.tool()
+#def disable_gui_tool():
+#    """
+#    MCP Tool: Disable GUI operations.
+#
+#    Returns:
+#        dict: Status of GUI disable operation
+#    """
+#    global designer_instance
+#    if designer_instance is None:
+#        return {
+#            "status": "success",
+#            "gui_enabled": False,
+#            "message": "Designer not initialized - GUI already disabled"
+#        }
+#
+#    try:
+#        was_disabled = designer_instance.disable_gui()
+#        return {
+#            "status": "success",
+#            "gui_enabled": designer_instance.is_gui_enabled(),
+#            "message": "GUI disabled successfully" if was_disabled else "GUI was already disabled"
+#        }
+#    except Exception as e:
+#        return {"error": f"Failed to disable GUI: {str(e)}"}
 
 if __name__ == "__main__":
     mcp.run('stdio')
