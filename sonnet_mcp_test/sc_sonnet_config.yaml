@@ -1,0 +1,46 @@
+# sonnet_config.yml
+
+# Box dimensions (in microns)
+box_x: 3100
+box_y: 1000
+
+ls: 35 # sheet inductance in pH/sq
+metal_name: "NbN" # metal name of your choice
+layer: 0 # by default, layer 0 is used
+data_type: 0 #by default, data type 0 is used
+gds_file_path: "C:/Users/slab/Desktop/Yueheng_Sonnet/sonnet_mcp_test/cpw_demo.gds"
+sonnet_file_path: "C:/Users/slab/Desktop/Yueheng_Sonnet/sonnet_mcp_test/cpw_mcp_test3.son"
+frequency_sweep_type: "abs" # frequency sweep type, can be "abs" or "linear"
+num_points: 201 # number of frequency points in the sweep
+start_frequency: 7.05 # start frequency in GHz for the sweep
+stop_frequency: 7.15 # stop frequency in GHz for the sweep
+ports:
+  - port_name: "Port1"
+    port_number: 1
+    resistance: 50.0 #impedance of the port in Ohms
+    x: 300
+    y: 1000
+  - port_name: "Port2"
+    port_number: 2
+    resistance: 50.0 #impedance of the port in Ohms
+    x: 300
+    y: 0
+  - port_name: "Port3"
+    port_number: 3
+    resistance: 50.0 #impedance of the port in Ohms
+    x: 3100
+    y: 1000
+
+# Optional overrides:
+
+# z_box: 2000
+# xy_margin: 2000
+# air_thickness: 1000
+# si_thickness: 100
+# si_epsilon: 11.7
+# si_loss: 0.0
+# si_conductivity: 0.0
+# tech_x_min: 1
+# tech_x_max: 100
+# tech_y_min: 1
+# tech_y_max: 100

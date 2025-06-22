@@ -1,0 +1,11 @@
+{
+    "mcpServers":{
+        "qick_server":{
+    "key": "example",
+    "command": "C:\\Users\\slab\\anaconda3\\envs\\sonnet_mcp\\python.exe",
+    "args": [
+      "C:\\Users\\slab\\Desktop\\Yueheng_sonnet\\sonnet_mcp_test\\main.py"
+    ]
+  }
+}
+}

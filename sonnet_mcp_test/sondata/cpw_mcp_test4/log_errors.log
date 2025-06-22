@@ -1,0 +1,12 @@
+Run 1:  Sat Jun 21 18:52:19 2025.  .
+        Em version 18.56 (64-bit Windows) on ziqian-li-mem local.
+
+  Project:  C:\Users\slab\Desktop\Yueheng_Sonnet\sonnet_mcp_test\cpw_mcp_test4.son.
+
+    Begin electromagnetic simulation using frequency sweep:
+      ABS Start = 7.05, Stop = 7.15 GHZ
+
+    Post-Analysis information for em run 1:
+      Em errors detected: 0    Em warnings detected: 0.
+
+Em simulation completed Sat Jun 21 19:18:13 2025.

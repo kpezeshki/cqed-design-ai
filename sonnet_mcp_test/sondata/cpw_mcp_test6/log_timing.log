@@ -1,0 +1,185 @@
+Run 1:  Sat Jun 21 19:30:57 2025.  .
+        Em version 18.56 (64-bit Windows) on ziqian-li-mem local.
+
+  Project:  C:\Users\slab\Desktop\Yueheng_Sonnet\sonnet_mcp_test\cpw_mcp_test6.son.
+
+    Begin electromagnetic simulation using frequency sweep:
+      ABS Start = 7.05, Stop = 7.15 GHZ
+
+    Frequency:  7.05 GHZ
+      Subsectioning at 7.15 GHz with Eeff of 6.35.
+      Subsectioning time:  1 minute 51 seconds.
+      De-embedding information for top box wall port(s):
+        Top SOC Electric Wall: 500 microns length, 2542 subsections, 293 MB.
+        Top SOC Magnetic Wall: 1000 microns length, 2482 subsections, 292 MB.
+      De-embedding information for bottom box wall port(s):
+        Bottom SOC Electric Wall: 500 microns length, 2542 subsections, 293 MB.
+        Bottom SOC Magnetic Wall: 1000 microns length, 2482 subsections, 292 MB.
+      Em license feature:  emhighperformance.
+
+      Circuit requires 8284 subsections and 1947 MB of memory.
+
+      Primary structure subsections by level and type:
+      Level 0:
+        Surface Staircase:  8,284
+
+      Process memory by type:
+        System matrix:            524 MB
+        Elemental subsections:
+          Primary structure:      434 MB
+          Top standard:           460 MB
+          Bottom standard:        460 MB
+        Fourier transform:        62 MB
+        Waveguide mode:           6 MB
+        Adaptive band synthesis:  0 MB
+        Miscellaneous:            1 MB
+        TOTAL REQUIRED MEMORY:    1,947 MB
+
+      Amount of RAM installed on host computer:  256 GB
+      Number of logical processors:  64
+      Matrix solver:  internal 64-bit SSE with loss.
+      Simulation mode:  local machine.
+      Threads:  using 64 thread(s), 64 core(s) available.
+      Waveguide mode time:  0.180 seconds.
+      Fourier transform time:  0.744 seconds.
+      Coupling time:  3 minutes 36 seconds.
+      Loss time:  0.330 seconds.
+      Matrix fill time:  3 minutes 38 seconds.
+      Matrix solve time:  9 seconds.
+      De-embedding time for top box wall:
+        SOC Electric Wall Std: 31 seconds.
+        SOC Magnetic Wall Std: 15 seconds.
+        Total:                 46 seconds.
+      Frequency completed Sat Jun 21 19:37:53 2025.
+      Total time per frequency:  5 minutes 4 seconds.
+
+    Frequency:  7.15 GHZ
+      Waveguide mode time:  0.156 seconds.
+      Fourier transform time:  0.594 seconds.
+      Coupling time:  3 minutes 52 seconds.
+      Loss time:  0.286 seconds.
+      Matrix fill time:  3 minutes 53 seconds.
+      Matrix solve time:  9 seconds.
+      Frequency completed Sat Jun 21 19:42:45 2025.
+      Total time per frequency:  4 minutes 52 seconds.
+      ABS: SNR = 100.291 dB (129.533 dB Goal) for S1_2 at 7.1 GHz.
+      ABS: Time = 0.015 seconds.
+
+    Frequency:  7.1 GHZ
+      Waveguide mode time:  0.157 seconds.
+      Fourier transform time:  0.608 seconds.
+      Coupling time:  3 minutes 45 seconds.
+      Loss time:  0.304 seconds.
+      Matrix fill time:  3 minutes 47 seconds.
+      Matrix solve time:  8 seconds.
+      Frequency completed Sat Jun 21 19:47:28 2025.
+      Total time per frequency:  4 minutes 42 seconds.
+      ABS: SNR = 103.078 dB (118.014 dB Goal) for S1_2 at 7.125 GHz.
+      ABS: Time = 0.015 seconds.
+
+    Frequency:  7.125 GHZ
+      Waveguide mode time:  0.152 seconds.
+      Fourier transform time:  0.575 seconds.
+      Coupling time:  3 minutes 37 seconds.
+      Loss time:  0.289 seconds.
+      Matrix fill time:  3 minutes 38 seconds.
+      Matrix solve time:  5 seconds.
+      Frequency completed Sat Jun 21 19:52:07 2025.
+      Total time per frequency:  4 minutes 39 seconds.
+      ABS: SNR = 113.107 dB (118.014 dB Goal) for S1_2 at 7.1125 GHz.
+      ABS: Time = 0.017 seconds.
+
+    Frequency:  7.1125 GHZ
+      Waveguide mode time:  0.153 seconds.
+      Fourier transform time:  0.630 seconds.
+      Coupling time:  3 minutes 29 seconds.
+      Loss time:  0.309 seconds.
+      Matrix fill time:  3 minutes 30 seconds.
+      Matrix solve time:  6 seconds.
+      Frequency completed Sat Jun 21 19:56:09 2025.
+      Total time per frequency:  4 minutes 3 seconds.
+      ABS: SNR = 117.236 dB (118.014 dB Goal) for S1_2 at 7.075 GHz.
+      ABS: Time = 0.023 seconds.
+
+    Frequency:  7.075 GHZ
+      Waveguide mode time:  0.151 seconds.
+      Fourier transform time:  0.522 seconds.
+      Coupling time:  1 minute 44 seconds.
+      Loss time:  0.295 seconds.
+      Matrix fill time:  1 minute 45 seconds.
+      Matrix solve time:  4 seconds.
+      Frequency completed Sat Jun 21 19:58:27 2025.
+      Total time per frequency:  2 minutes 17 seconds.
+      ABS: Energy conservation for port 2 at 7.0805 GHz.
+      ABS: Time = 0.027 seconds.
+
+    Frequency:  7.0805 GHZ
+      Waveguide mode time:  0.151 seconds.
+      Fourier transform time:  0.532 seconds.
+      Coupling time:  1 minute 43 seconds.
+      Loss time:  0.297 seconds.
+      Matrix fill time:  1 minute 44 seconds.
+      Matrix solve time:  4 seconds.
+      Frequency completed Sat Jun 21 20:00:43 2025.
+      Total time per frequency:  2 minutes 16 seconds.
+      ABS: Energy conservation for port 1 at 7.0885 GHz.
+      ABS: Time = 0.033 seconds.
+
+    Frequency:  7.0885 GHZ
+      Waveguide mode time:  0.151 seconds.
+      Fourier transform time:  0.517 seconds.
+      Coupling time:  1 minute 45 seconds.
+      Loss time:  0.276 seconds.
+      Matrix fill time:  1 minute 46 seconds.
+      Matrix solve time:  4 seconds.
+      Frequency completed Sat Jun 21 20:03:00 2025.
+      Total time per frequency:  2 minutes 17 seconds.
+      ABS: SNR = 66.7126 dB (87.9814 dB Goal) for S1_2 at 7.0795 GHz.
+      ABS: Time = 0.040 seconds.
+
+    Frequency:  7.0795 GHZ
+      Waveguide mode time:  0.151 seconds.
+      Fourier transform time:  0.520 seconds.
+      Coupling time:  1 minute 43 seconds.
+      Loss time:  0.334 seconds.
+      Matrix fill time:  1 minute 44 seconds.
+      Matrix solve time:  4 seconds.
+      Frequency completed Sat Jun 21 20:05:16 2025.
+      Total time per frequency:  2 minutes 16 seconds.
+      ABS: SNR = 100.014 dB (58.7407 dB Goal) for S1_1 at 7.08 GHz.
+      ABS: Time = 0.050 seconds.
+
+      ABS: Detected 1 resonance(s) on iteration 1:
+        Resonance 1:  FreqMin = 7.0635  FreqCenter = 7.0795  FreqMax = 7.0955 GHz
+
+      ABS: Detected 1 resonance(s) on iteration 2:
+        Resonance 1:  FreqMin = 7.06376755852843  FreqCenter = 7.07960702341137  FreqMax = 7.09544648829431 GHz
+
+      ABS: Detected 1 resonance(s) on iteration 3:
+        Resonance 1:  FreqMin = 7.0635  FreqCenter = 7.07959368730765  FreqMax = 7.0955 GHz
+
+      ABS: Detected 1 resonance(s) on iteration 4:
+        Resonance 1:  FreqMin = 7.06374924768639  FreqCenter = 7.0795986525878  FreqMax = 7.0955 GHz
+
+    Frequency:  7.079598652588 GHZ
+      Waveguide mode time:  0.150 seconds.
+      Fourier transform time:  0.533 seconds.
+      Coupling time:  1 minute 43 seconds.
+      Loss time:  0.302 seconds.
+      Matrix fill time:  1 minute 44 seconds.
+      Matrix solve time:  4 seconds.
+      Frequency completed Sat Jun 21 20:07:31 2025.
+      Total time per frequency:  2 minutes 15 seconds.
+      ABS: SNR = 58.2668 dB (58.2395 dB Goal) for S1_1 at 7.07971 GHz.
+      ABS: Time = 0.189 seconds.
+
+      ABS: Detected 1 resonance(s) on iteration 5:
+        Resonance 1:  FreqMin = 7.06374924768639  FreqCenter = 7.0795986525878  FreqMax = 7.0955 GHz
+
+      ABS: Detected 1 resonance(s) on iteration 6:
+        Resonance 1:  FreqMin = 7.0635  FreqCenter = 7.0795986525878  FreqMax = 7.0955 GHz
+
+    Post-Analysis information for em run 1:
+      Total time for 10 frequencies:  36 minutes 35 seconds.
+
+Em simulation completed Sat Jun 21 20:07:32 2025.
