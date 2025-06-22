@@ -642,3 +642,5 @@ if __name__ == "__main__":
     print(f"Effective permittivity εₑff={analytical_approximations.epsilon_eff:.2f}")
     print(f"Feedline impedance Z₀={analytical_approximations.Z0}Ω")
     print(f"Resonator impedance Zᵣₑₛ={analytical_approximations.Z_res}Ω")
+
+    mcp.run('stdio')
