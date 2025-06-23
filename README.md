@@ -7,7 +7,7 @@ Copied from slack messages yesterday.
 
 #### project goal: cad generation through qiskit metal and resonator frequency. kappa targeting through sonnet, all automated by LLM.
 
-Let's update (this doc)[https://docs.google.com/document/d/1B-r4muDJw9WNXbEdJYd3dghIXhSP0lSPmKcZgdmk9Hk/edit?tab=t.0] in real time as we make progress. In summary, we need to build and prompt engineer for the following MCP servers:
+Let's update [this doc](https://docs.google.com/document/d/1B-r4muDJw9WNXbEdJYd3dghIXhSP0lSPmKcZgdmk9Hk/edit?tab=t.0) (team members only!) in real time as we make progress. In summary, we need to build and prompt engineer for the following MCP servers:
 
 - [x] MCP server (1) to (a) calculate coplanar capacitance -> coupling q given the width and spacing of the capacitive coupling structure and the feedline (b) calculate the resonant frequency of a quarter-wave structure given some overall length.
 - [x] MCP server (2) that acts as a ‘black box’ capacitive coupler simulation. This sets up and runs in sonnet an S31 simulation to extract Qc as described in section 4.2 of this https://web.physics.ucsb.edu/~bmazin/Papers/2008/Gao/Caltech%20Thesis%202008%20Gao.pdf. The simulation should include touchstone processing and return 1. A number 2. A plot of S31 against frequency.
